@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard | DOKMON</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+      (function () {
+        emailjs.init("KQPhlYvg887OFfW96"); // Ganti dengan user ID EmailJS kamu
+      })();
+    </script>
   </head>
   <body class="bg-gray-100 min-h-screen">
     <!-- Navbar -->
@@ -27,70 +33,21 @@
         >
           <thead class="bg-blue-100 text-gray-700">
             <tr>
-              <th class="px-4 py-2 text-left">Nomor Dokumen</th>
-              <th class="px-4 py-2 text-left">Nama Dokumen</th>
-              <th class="px-4 py-2 text-left">Jenis</th>
-              <th class="px-4 py-2 text-left">Revisi</th>
-              <th class="px-4 py-2 text-left">Tanggal</th>
-              <th class="px-4 py-2 text-left">Tanggung Jawab</th>
-              <th class="px-4 py-2 text-left">Terkait Dokumen</th>
+              <th class="px-4 py-2">Nomor Dokumen</th>
+              <th class="px-4 py-2">Nama Dokumen</th>
+              <th class="px-4 py-2">Jenis</th>
+              <th class="px-4 py-2">Revisi</th>
+              <th class="px-4 py-2">Tanggal</th>
+              <th class="px-4 py-2">Tanggung Jawab</th>
+              <th class="px-4 py-2">Terkait</th>
+              <th class="px-4 py-2">Status</th>
+              <th class="px-4 py-2">Aksi</th>
             </tr>
           </thead>
-          <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
-            <!-- Data rows -->
-            <tr>
-              <td class="px-4 py-2">PR-MR-001</td>
-              <td class="px-4 py-2">
-                Documented Information (Informasi yang Terdokumentasi)
-              </td>
-              <td class="px-4 py-2">PROCEDURE</td>
-              <td class="px-4 py-2">17</td>
-              <td class="px-4 py-2">08.06.24</td>
-              <td class="px-4 py-2">ISO</td>
-              <td class="px-4 py-2">WI-MR-002</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">PR-MR-002</td>
-              <td class="px-4 py-2">
-                Identifikasi Aspek, Dampak Lingkungan & Evaluasi
-              </td>
-              <td class="px-4 py-2">PROCEDURE</td>
-              <td class="px-4 py-2">11</td>
-              <td class="px-4 py-2">12.02.24</td>
-              <td class="px-4 py-2">ISO</td>
-              <td class="px-4 py-2">WI-MR-001</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">PR-MR-003</td>
-              <td class="px-4 py-2">Audit Procedure / Prosedur Audit</td>
-              <td class="px-4 py-2">PROCEDURE</td>
-              <td class="px-4 py-2">9</td>
-              <td class="px-4 py-2">12.02.24</td>
-              <td class="px-4 py-2">ISO</td>
-              <td class="px-4 py-2">WI-MR-009</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">PR-MR-004</td>
-              <td class="px-4 py-2">
-                Procedure of Nonconformity, Correction Action ...
-              </td>
-              <td class="px-4 py-2">PROCEDURE</td>
-              <td class="px-4 py-2">9</td>
-              <td class="px-4 py-2">12.02.24</td>
-              <td class="px-4 py-2">ISO</td>
-              <td class="px-4 py-2">PR-MR-009</td>
-            </tr>
-            <tr>
-              <td class="px-4 py-2">PR-MR-005</td>
-              <td class="px-4 py-2">Corrective Actions / Tindakan Perbaikan</td>
-              <td class="px-4 py-2">PROCEDURE</td>
-              <td class="px-4 py-2">4</td>
-              <td class="px-4 py-2">12.02.24</td>
-              <td class="px-4 py-2">ISO</td>
-              <td class="px-4 py-2">PR-MR-007</td>
-            </tr>
-            <!-- Tambahan baris dapat ditambahkan manual atau otomatis dengan script -->
-          </tbody>
+          <tbody
+            id="docBody"
+            class="text-sm text-gray-700 divide-y divide-gray-200"
+          ></tbody>
         </table>
       </div>
     </div>
@@ -99,5 +56,223 @@
     <footer class="mt-10 text-center text-gray-500 text-sm py-4">
       © 2025 DOKMON. Sistem Pengingat Dokumen.
     </footer>
+
+    <!-- Popup Update Revisi -->
+    <div
+      id="updateModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
+        <h3 class="text-lg font-semibold mb-4">Update Revisi Dokumen</h3>
+        <form id="updateForm" onsubmit="updateRevision(event)">
+          <input type="hidden" id="updateIndex" />
+          <div class="mb-4">
+            <label
+              for="newRevision"
+              class="block text-sm font-medium text-gray-700"
+              >Revisi Baru</label
+            >
+            <input
+              type="number"
+              id="newRevision"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+              required
+            />
+          </div>
+          <div class="mb-4">
+            <label for="newDate" class="block text-sm font-medium text-gray-700"
+              >Tanggal Revisi (DD.MM.YY)</label
+            >
+            <input
+              type="text"
+              id="newDate"
+              placeholder="Contoh: 03.06.25"
+              class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2"
+              required
+            />
+          </div>
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              onclick="closeUpdateForm()"
+              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            >
+              Simpan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script Utama -->
+    <script>
+      const documents = [
+        [
+          "PR-MR-001",
+          "Documented Information",
+          "PROCEDURE",
+          17,
+          "08.06.24",
+          "ISO",
+          "WI-MR-002",
+        ],
+        [
+          "PR-MR-002",
+          "Identifikasi Aspek, Dampak Lingkungan & Evaluasi",
+          "PROCEDURE",
+          11,
+          "12.02.23",
+          "ISO",
+          "WI-MR-001",
+        ],
+        [
+          "PR-MR-003",
+          "Audit Procedure / Prosedur Audit",
+          "PROCEDURE",
+          9,
+          "12.02.22",
+          "ISO",
+          "WI-MR-009",
+        ],
+        [
+          "PR-MR-004",
+          "Procedure of Nonconformity, Correction Action ...",
+          "PROCEDURE",
+          9,
+          "12.02.21",
+          "ISO",
+          "PR-MR-009",
+        ],
+        [
+          "PR-MR-005",
+          "Corrective Actions / Tindakan Perbaikan",
+          "PROCEDURE",
+          4,
+          "12.02.20",
+          "ISO",
+          "PR-MR-007",
+        ],
+        [
+          "PR-MR-006",
+          "Management Review Procedure",
+          "PROCEDURE",
+          3,
+          "12.02.24",
+          "ISO",
+          "PR-MR-008",
+        ],
+        [
+          "PR-QC-001",
+          "Quality Control / Pengendalian Mutu",
+          "PROCEDURE",
+          9,
+          "12.02.23",
+          "QUALITY CONTROL",
+          "",
+        ],
+        [
+          "PR-SFT-010",
+          "Procedure of Restricted Area",
+          "PROCEDURE",
+          10,
+          "03.06.23",
+          "SAFETY",
+          "",
+        ],
+        [
+          "PR-IT-002",
+          "Procedure Service Desk",
+          "PROCEDURE",
+          8,
+          "15.08.23",
+          "IT",
+          "",
+        ],
+      ];
+
+      function getStatus(tanggal) {
+        const [dd, mm, yy] = tanggal.split(".");
+        const docDate = new Date(`20${yy}`, mm - 1, dd);
+        const now = new Date();
+        const yearsDiff = (now - docDate) / (1000 * 60 * 60 * 24 * 365.25);
+
+        if (yearsDiff <= 1)
+          return { label: "Dokumen Baru", color: "text-green-600" };
+        if (yearsDiff <= 2)
+          return { label: "Perlu Ditinjau", color: "text-yellow-600" };
+        return { label: "Harus Diperbaharui", color: "text-red-600" };
+      }
+
+      function sendEmail(doc) {
+        emailjs
+          .send("gmail", "template_rafee5j", {
+            to_email: "ruthomegapurba@gmail.com",
+            subject: "Peringatan Dokumen Harus Diperbaharui",
+            message: `Dokumen "${doc[1]}" (${doc[0]}) harus segera diperbaharui.`,
+          })
+          .then(
+            (res) => console.log("Email dikirim:", res.status),
+            (err) => console.error("Gagal kirim email:", err)
+          );
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("docBody");
+        tbody.innerHTML = "";
+
+        documents.forEach((doc, index) => {
+          const status = getStatus(doc[4]);
+          if (status.label === "Harus Diperbaharui") sendEmail(doc);
+
+          const row = `
+            <tr>
+              <td class="px-4 py-2">${doc[0]}</td>
+              <td class="px-4 py-2">${doc[1]}</td>
+              <td class="px-4 py-2">${doc[2]}</td>
+              <td class="px-4 py-2">${doc[3]}</td>
+              <td class="px-4 py-2">${doc[4]}</td>
+              <td class="px-4 py-2">${doc[5]}</td>
+              <td class="px-4 py-2">${doc[6]}</td>
+              <td class="px-4 py-2 font-semibold ${status.color}">${status.label}</td>
+              <td class="px-4 py-2">
+                <button onclick="openUpdateForm(${index})" class="bg-blue-500 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">Update</button>
+              </td>
+            </tr>`;
+          tbody.insertAdjacentHTML("beforeend", row);
+        });
+      }
+
+      function openUpdateForm(index) {
+        document.getElementById("updateIndex").value = index;
+        document.getElementById("newRevision").value = documents[index][3];
+        document.getElementById("newDate").value = documents[index][4];
+        document.getElementById("updateModal").classList.remove("hidden");
+        document.getElementById("updateModal").classList.add("flex");
+      }
+
+      function closeUpdateForm() {
+        document.getElementById("updateModal").classList.add("hidden");
+        document.getElementById("updateModal").classList.remove("flex");
+      }
+
+      function updateRevision(e) {
+        e.preventDefault();
+        const index = parseInt(document.getElementById("updateIndex").value);
+        const newRev = parseInt(document.getElementById("newRevision").value);
+        const newDate = document.getElementById("newDate").value;
+        documents[index][3] = newRev;
+        documents[index][4] = newDate;
+        closeUpdateForm();
+        renderTable();
+      }
+
+      window.onload = renderTable;
+    </script>
   </body>
 </html>
