@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | DOKMON</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 shadow-md">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-white font-bold text-xl">DOKMON</h1>
+        <span class="text-white text-sm">Dashboard Pantauan Dokumen</span>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container mx-auto mt-10 px-4">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-6">
+        Daftar Dokumen Terpantau
+      </h2>
+
+      <div class="overflow-x-auto">
+        <table
+          class="min-w-full bg-white border border-gray-300 rounded-xl overflow-hidden"
+        >
+          <thead class="bg-blue-100 text-gray-700">
+            <tr>
+              <th class="px-4 py-2 text-left">Nomor Dokumen</th>
+              <th class="px-4 py-2 text-left">Nama Dokumen</th>
+              <th class="px-4 py-2 text-left">Jenis</th>
+              <th class="px-4 py-2 text-left">Revisi</th>
+              <th class="px-4 py-2 text-left">Tanggal</th>
+              <th class="px-4 py-2 text-left">Tanggung Jawab</th>
+              <th class="px-4 py-2 text-left">Terkait Dokumen</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm text-gray-700 divide-y divide-gray-200">
+            <!-- Data rows -->
+            <tr>
+              <td class="px-4 py-2">PR-MR-001</td>
+              <td class="px-4 py-2">
+                Documented Information (Informasi yang Terdokumentasi)
+              </td>
+              <td class="px-4 py-2">PROCEDURE</td>
+              <td class="px-4 py-2">17</td>
+              <td class="px-4 py-2">08.06.24</td>
+              <td class="px-4 py-2">ISO</td>
+              <td class="px-4 py-2">WI-MR-002</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">PR-MR-002</td>
+              <td class="px-4 py-2">
+                Identifikasi Aspek, Dampak Lingkungan & Evaluasi
+              </td>
+              <td class="px-4 py-2">PROCEDURE</td>
+              <td class="px-4 py-2">11</td>
+              <td class="px-4 py-2">12.02.24</td>
+              <td class="px-4 py-2">ISO</td>
+              <td class="px-4 py-2">WI-MR-001</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">PR-MR-003</td>
+              <td class="px-4 py-2">Audit Procedure / Prosedur Audit</td>
+              <td class="px-4 py-2">PROCEDURE</td>
+              <td class="px-4 py-2">9</td>
+              <td class="px-4 py-2">12.02.24</td>
+              <td class="px-4 py-2">ISO</td>
+              <td class="px-4 py-2">WI-MR-009</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">PR-MR-004</td>
+              <td class="px-4 py-2">
+                Procedure of Nonconformity, Correction Action ...
+              </td>
+              <td class="px-4 py-2">PROCEDURE</td>
+              <td class="px-4 py-2">9</td>
+              <td class="px-4 py-2">12.02.24</td>
+              <td class="px-4 py-2">ISO</td>
+              <td class="px-4 py-2">PR-MR-009</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-2">PR-MR-005</td>
+              <td class="px-4 py-2">Corrective Actions / Tindakan Perbaikan</td>
+              <td class="px-4 py-2">PROCEDURE</td>
+              <td class="px-4 py-2">4</td>
+              <td class="px-4 py-2">12.02.24</td>
+              <td class="px-4 py-2">ISO</td>
+              <td class="px-4 py-2">PR-MR-007</td>
+            </tr>
+            <!-- Tambahan baris dapat ditambahkan manual atau otomatis dengan script -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-10 text-center text-gray-500 text-sm py-4">
+      © 2025 DOKMON. Sistem Pengingat Dokumen.
+    </footer>
+  </body>
+</html>
